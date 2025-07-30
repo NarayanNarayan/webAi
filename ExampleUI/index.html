@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Div Creator</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+        }
+        body {
+            width: 100vw;
+            height: 100vh;
+            min-height: 100vh;
+            min-width: 100vw;
+            overflow: hidden;
+        }
+        #parent {
+            width: 95vw;
+            height: 95vh;
+            border: none;
+            position: relative;
+            margin: 0;
+            background: #f9f9f9;
+            box-sizing: border-box;
+        }
+        .child {
+            margin: 50px;
+            position: absolute;
+            background: #b3d1ff;
+            border: 1px solid #0074d9;
+            box-sizing: border-box;
+        }
+        .child.right {
+            left: 52%;
+        }
+        button {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            z-index: 2;
+        }
+    </style>
+</head>
+<body>
+    <div id="parent"></div>
+    <button id="addDivsBtn" style="position: absolute; top: 16px; left: 16px; z-index: 10;">Add 2 Divs</button>
+    <script>
+        function addDivs(parent) {
+            parent.innerHTML = '';
+            const parentWidth = parent.offsetWidth;
+            const parentHeight = parent.offsetHeight;
+            let div1 = document.createElement('div');
+            let div2 = document.createElement('div');
+            div1.className = 'child';
+            div2.className = 'child';
+            div1.innerText = "Narayan";
+            div2.innerText = "Narayan";
+            // Add button to each child
+            const btn1 = document.createElement('button');
+            btn1.textContent = 'Add 2 Divs';
+            btn1.onclick = function(e) {
+                e.stopPropagation();
+                addDivs(div1);
+            };
+            div1.appendChild(btn1);
+            const btn2 = document.createElement('button');
+            btn2.textContent = 'Add 2 Divs';
+            btn2.onclick = function(e) {
+                e.stopPropagation();
+                addDivs(div2);
+            };
+            div2.appendChild(btn2);
+            if (parentWidth >= parentHeight) {
+                // Split vertically (side by side)
+                div1.style.position = div2.style.position = 'absolute';
+                div1.style.left = '0';
+                div1.style.top = '0';
+                div1.style.width = '48%';
+                div1.style.height = '96%';
+                div2.style.left = '52%';
+                div2.style.top = '0';
+                div2.style.width = '48%';
+                div2.style.height = '96%';
+            } else {
+                // Split horizontally (one on top of the other)
+                div1.style.position = div2.style.position = 'absolute';
+                div1.style.left = '0';
+                div1.style.top = '0';
+                div1.style.width = '96%';
+                div1.style.height = '48%';
+                div2.style.left = '0';
+                div2.style.top = '52%';
+                div2.style.width = '96%';
+                div2.style.height = '48%';
+            }
+            parent.appendChild(div1);
+            parent.appendChild(div2);
+        }
+        document.getElementById('addDivsBtn').onclick = function() {
+            addDivs(document.getElementById('parent'));
+        };
+    </script>
+    <script src="../Utils.js"></script>
+    <script src="../Parser.js"></script>
+</body>
+</html> 

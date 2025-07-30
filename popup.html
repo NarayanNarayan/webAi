@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WebAI Summarizer</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>WebAI Summarizer</h1>
+      <p class="subtitle">Intelligent text summarization powered by LangGraph</p>
+    </header>
+
+    <div class="content">
+      <div class="page-info">
+        <h3>Current Page</h3>
+        <div id="pageTitle" class="page-title">Loading...</div>
+        <div id="pageUrl" class="page-url">Loading...</div>
+      </div>
+
+      <div class="actions">
+        <button id="summarizeBtn" class="btn btn-primary">
+          <span class="btn-text">Summarize Page</span>
+          <span class="btn-loading" style="display: none;">Summarizing...</span>
+        </button>
+        
+        <button id="simpleSummarizeBtn" class="btn btn-secondary">
+          Simple Summary
+        </button>
+      </div>
+
+      <div class="advanced-actions">
+        <div class="highlight-section">
+          <h3>Agentic Highlighting</h3>
+          <div class="input-group">
+            <input type="text" id="highlightQuery" placeholder="What would you like to highlight?" class="input-field">
+            <button id="highlightBtn" class="btn btn-small">Highlight</button>
+          </div>
+        </div>
+
+        <div class="autofill-section">
+          <h3>Form Autofill</h3>
+          <div class="input-group">
+            <input type="text" id="formFields" placeholder="Form fields (e.g., name, email, phone)" class="input-field">
+            <button id="autofillBtn" class="btn btn-small">Suggest</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="summary-section" style="display: none;">
+        <h3>Summary</h3>
+        <div id="summaryContent" class="summary-content">
+          <!-- Summary will be displayed here -->
+        </div>
+        
+        <div class="summary-actions">
+          <button id="copyBtn" class="btn btn-small">Copy</button>
+          <button id="saveBtn" class="btn btn-small">Save</button>
+        </div>
+      </div>
+
+      <div class="highlight-results" style="display: none;">
+        <h3>Highlight Results</h3>
+        <div id="highlightContent" class="highlight-content">
+          <!-- Highlight results will be displayed here -->
+        </div>
+        <div class="highlight-actions">
+          <button id="applyHighlightBtn" class="btn btn-small">Apply to Page</button>
+        </div>
+      </div>
+
+      <div class="autofill-results" style="display: none;">
+        <h3>Form Suggestions</h3>
+        <div id="autofillContent" class="autofill-content">
+          <!-- Autofill suggestions will be displayed here -->
+        </div>
+        <div class="autofill-actions">
+          <button id="applyAutofillBtn" class="btn btn-small">Apply to Forms</button>
+        </div>
+      </div>
+
+      <div class="error-section" style="display: none;">
+        <div id="errorMessage" class="error-message">
+          <!-- Error messages will be displayed here -->
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <div class="status">
+        <span id="statusText">Ready</span>
+      </div>
+    </footer>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html> 

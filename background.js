@@ -72,7 +72,6 @@ class WebAIBackground {
         url: this.currentPageData.url,
         title: this.currentPageData.title,
         content: this.currentPageData.miniBodyJson,
-        flatText: this.currentPageData.flatContent.join('\n'),
         timestamp: this.currentPageData.timestamp
       };
 
@@ -106,17 +105,41 @@ class WebAIBackground {
       await this.getCurrentPageData();
     }
 
-    const flatText = this.currentPageData.flatContent.join('\n');
-    const words = flatText.split(/\s+/);
-    
-    // Simple summarization: take first 100 words and add ellipsis
-    const summary = words.slice(0, 100).join(' ') + (words.length > 100 ? '...' : '');
-    
-    return {
-      summary,
-      wordCount: words.length,
-      method: 'simple'
-    };
+    // Simple summarization: extract text from content structure
+    try {
+      const content = JSON.parse(this.currentPageData.miniBodyJson);
+      const textNodes = [];
+      
+      function extractText(node) {
+        if (typeof node === 'object' && node !== null) {
+          if (node.text && node.text.trim()) {
+            textNodes.push(node.text.trim());
+          }
+          if (node.childs) {
+            node.childs.forEach(extractText);
+          }
+        }
+      }
+      
+      extractText(content);
+      const words = textNodes.join(' ').split(/\s+/);
+      
+      // Simple summarization: take first 100 words and add ellipsis
+      const summary = words.slice(0, 100).join(' ') + (words.length > 100 ? '...' : '');
+      
+      return {
+        summary,
+        wordCount: words.length,
+        method: 'simple'
+      };
+    } catch (error) {
+      console.error('Error in simple summarization:', error);
+      return {
+        summary: 'Unable to generate summary',
+        wordCount: 0,
+        method: 'simple'
+      };
+    }
   }
 
   // Agentic highlighting using Gemini
@@ -131,7 +154,6 @@ class WebAIBackground {
         url: this.currentPageData.url,
         title: this.currentPageData.title,
         content: this.currentPageData.miniBodyJson,
-        flatText: this.currentPageData.flatContent.join('\n'),
         query: query
       };
 

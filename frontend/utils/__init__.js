@@ -1,0 +1,1 @@
+// Frontend Utils package for WebAI MVC architecture 

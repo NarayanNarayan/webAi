@@ -98,7 +98,6 @@ The extension expects a LangGraph API endpoint that accepts POST requests with t
   "url": "https://example.com",
   "title": "Page Title",
   "content": "minified JSON content",
-  "flatText": "extracted text content",
   "timestamp": "2024-01-01T00:00:00.000Z"
 }
 ```
@@ -180,12 +179,11 @@ class SummaryState(TypedDict):
     url: str
     title: str
     content: str
-    flat_text: str
     summary: str
 
 def extract_key_points(state: SummaryState) -> SummaryState:
     # Your LangGraph logic here
-    # Process state["content"] and state["flat_text"]
+    # Process state["content"] for text extraction and analysis
     return state
 
 def generate_summary(state: SummaryState) -> SummaryState:

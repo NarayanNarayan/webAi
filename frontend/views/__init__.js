@@ -1,0 +1,1 @@
+// Frontend Views package for WebAI MVC architecture 

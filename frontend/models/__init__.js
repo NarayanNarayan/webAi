@@ -1,0 +1,1 @@
+// Frontend Models package for WebAI MVC architecture 

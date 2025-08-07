@@ -60,6 +60,7 @@ class DomBridge{
   }
   get miniBodyJson(){
     this._parse()._shorten();
+    console.log(this._miniBodyJson);
     return JSON.stringify(this._miniBodyJson);
   }
   _parse(){

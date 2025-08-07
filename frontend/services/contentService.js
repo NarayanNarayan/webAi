@@ -1,10 +1,20 @@
-// Content script that runs on web pages
-class WebAIContentScript {
+/**
+ * Content Service for WebAI Frontend
+ * Handles page content extraction and manipulation
+ */
+
+class ContentService {
+  /**
+   * Initialize content service
+   */
   constructor() {
     this.db = null;
     this.init();
   }
 
+  /**
+   * Initialize the service
+   */
   init() {
     // Wait for DOM to be ready
     if (document.readyState === 'loading') {
@@ -14,42 +24,18 @@ class WebAIContentScript {
     }
   }
 
+  /**
+   * Setup the content service
+   */
   setup() {
     // Initialize the DomBridge from Parser.js
     this.db = new DomBridge();
     
-    // Listen for messages from popup or background
-    chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-      if (request.action === 'getPageContent') {
-        this.getPageContent().then(content => {
-          console.log(content);
-          sendResponse({ success: true, content });
-        });
-        return true; // Keep message channel open for async response
-      } else if (request.action === 'refreshPageContent') {
-        this.refreshPageData().then(content => {
-          sendResponse({ success: true, content });
-        });
-        return true; // Keep message channel open for async response
-      } else if (request.action === 'highlightOnPage') {
-        this.highlightOnPage(request.highlights).then(result => {
-          sendResponse({ success: true, result });
-        });
-        return true;
-      } else if (request.action === 'autofillForm') {
-        this.autofillForm(request.formData).then(result => {
-          sendResponse({ success: true, result });
-        });
-        return true;
-      }
-    });
-
-    // Send initial page data to background
+    // Send initial page data
     this.sendPageData();
     
     // Listen for page navigation events
     window.addEventListener('beforeunload', () => {
-      // Clear any cached data when navigating away
       this.db = null;
     });
     
@@ -59,6 +45,9 @@ class WebAIContentScript {
     });
   }
 
+  /**
+   * Get current page content
+   */
   async getPageContent() {
     // Update the DOM bridge to get current page content
     this.db.update();
@@ -71,6 +60,9 @@ class WebAIContentScript {
     };
   }
 
+  /**
+   * Send page data to background
+   */
   sendPageData() {
     this.getPageContent().then(content => {
       chrome.runtime.sendMessage({
@@ -80,7 +72,9 @@ class WebAIContentScript {
     });
   }
   
-  // Force refresh page data (called when background requests fresh data)
+  /**
+   * Force refresh page data
+   */
   refreshPageData() {
     // Reinitialize the DOM bridge to get fresh content
     this.db = new DomBridge();
@@ -88,6 +82,9 @@ class WebAIContentScript {
     return this.getPageContent();
   }
 
+  /**
+   * Highlight text on the page
+   */
   async highlightOnPage(highlights) {
     // Remove existing highlights
     const existingHighlights = document.querySelectorAll('.webai-highlight');
@@ -138,6 +135,9 @@ class WebAIContentScript {
     return { highlightedCount };
   }
 
+  /**
+   * Autofill form on the page
+   */
   async autofillForm(formData) {
     const forms = document.querySelectorAll('form');
     let filledCount = 0;
@@ -169,7 +169,66 @@ class WebAIContentScript {
 
     return { filledCount };
   }
+
+  /**
+   * Extract form fields from the page
+   */
+  extractFormFields() {
+    const forms = document.querySelectorAll('form');
+    const formData = {};
+
+    forms.forEach(form => {
+      const inputs = form.querySelectorAll('input, textarea, select');
+      inputs.forEach(input => {
+        const name = input.name || input.id || input.placeholder || '';
+        if (name && !formData[name]) {
+          formData[name] = '';
+        }
+      });
+    });
+
+    return formData;
+  }
+
+  /**
+   * Get page metadata
+   */
+  getPageMetadata() {
+    return {
+      url: window.location.href,
+      title: document.title,
+      description: this.getMetaDescription(),
+      keywords: this.getMetaKeywords(),
+      author: this.getMetaAuthor()
+    };
+  }
+
+  /**
+   * Get meta description
+   */
+  getMetaDescription() {
+    const meta = document.querySelector('meta[name="description"]');
+    return meta ? meta.getAttribute('content') : '';
+  }
+
+  /**
+   * Get meta keywords
+   */
+  getMetaKeywords() {
+    const meta = document.querySelector('meta[name="keywords"]');
+    return meta ? meta.getAttribute('content') : '';
+  }
+
+  /**
+   * Get meta author
+   */
+  getMetaAuthor() {
+    const meta = document.querySelector('meta[name="author"]');
+    return meta ? meta.getAttribute('content') : '';
+  }
 }
-console.log("Narayan")
-// Initialize the content script
-new WebAIContentScript(); 
+
+// Export service for use in other modules
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = ContentService;
+} 

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web AI Extension</title>
+    <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+    <div class="popup-container">
+        <header class="popup-header">
+            <h1>Web AI Extension</h1>
+            <p class="subtitle">AI-powered webpage analysis</p>
+        </header>
+
+        <div id="page-info" class="page-info">
+            <!-- Page information will be populated here -->
+        </div>
+
+        <div id="status-message" class="status-message"></div>
+
+        <div class="action-buttons">
+            <button id="summarize-btn" class="btn btn-primary">
+                <span class="btn-icon">📝</span>
+                Summarize Page
+            </button>
+            
+            <button id="similar-pages-btn" class="btn btn-secondary">
+                <span class="btn-icon">🔍</span>
+                Find Similar
+            </button>
+            
+            <button id="autofill-btn" class="btn btn-secondary">
+                <span class="btn-icon">✏️</span>
+                Analyze Forms
+            </button>
+        </div>
+
+        <div id="loading-indicator" class="loading-indicator">
+            <!-- Loading content will be shown here -->
+        </div>
+
+        <div id="summary-container" class="content-container">
+            <!-- Summary content will be shown here -->
+        </div>
+
+        <div id="similar-pages-container" class="content-container">
+            <!-- Similar pages will be shown here -->
+        </div>
+
+        <div id="form-analysis-container" class="content-container">
+            <!-- Form analysis will be shown here -->
+        </div>
+
+        <footer class="popup-footer">
+            <button id="settings-btn" class="btn btn-text">
+                <span class="btn-icon">⚙️</span>
+                Settings
+            </button>
+        </footer>
+    </div>
+
+    <script type="module" src="popup.js"></script>
+</body>
+</html>

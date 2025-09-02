@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web AI Extension - Options</title>
+    <link rel="stylesheet" href="options.css">
+</head>
+<body>
+    <div class="options-container">
+        <header class="options-header">
+            <h1>Web AI Extension Settings</h1>
+            <p class="subtitle">Configure your AI services and preferences</p>
+        </header>
+
+        <div id="status-message" class="status-message"></div>
+
+        <form id="options-form" class="options-form">
+            <section class="form-section">
+                <h2>API Configuration</h2>
+                
+                <div class="form-group">
+                    <label for="gemini-api-key">Gemini API Key *</label>
+                    <input 
+                        type="password" 
+                        id="gemini-api-key" 
+                        name="gemini-api-key" 
+                        placeholder="Enter your Gemini API key"
+                        required
+                    >
+                    <small class="help-text">
+                        Get your API key from <a href="https://makersuite.google.com/app/apikey" target="_blank">Google AI Studio</a>
+                    </small>
+                </div>
+
+                <div class="form-group">
+                    <label for="rag-server-url">RAG Server URL</label>
+                    <input 
+                        type="url" 
+                        id="rag-server-url" 
+                        name="rag-server-url" 
+                        placeholder="http://localhost:8000"
+                    >
+                    <small class="help-text">
+                        URL of your RAG server for similarity search
+                    </small>
+                </div>
+            </section>
+
+            <section class="form-section">
+                <h2>Summarization Settings</h2>
+                
+                <div class="form-group">
+                    <label for="auto-summarize">
+                        <input type="checkbox" id="auto-summarize" name="auto-summarize">
+                        Automatically summarize pages on visit
+                    </label>
+                </div>
+
+                <div class="form-group">
+                    <label for="summary-length">Summary Length</label>
+                    <select id="summary-length" name="summary-length">
+                        <option value="short">Short (2-3 sentences)</option>
+                        <option value="medium">Medium (4-6 sentences)</option>
+                        <option value="long">Long (8-10 sentences)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="similarity-threshold">Similarity Threshold</label>
+                    <input 
+                        type="range" 
+                        id="similarity-threshold" 
+                        name="similarity-threshold" 
+                        min="0" 
+                        max="1" 
+                        step="0.1" 
+                        value="0.7"
+                    >
+                    <div class="range-value">
+                        <span id="threshold-value">0.7</span>
+                        <small>(0 = No similarity, 1 = Exact match)</small>
+                    </div>
+                </div>
+            </section>
+
+            <section class="form-section">
+                <h2>Actions</h2>
+                
+                <div class="action-buttons">
+                    <button type="button" id="save-btn" class="btn btn-primary">
+                        <span class="btn-icon">💾</span>
+                        Save Settings
+                    </button>
+                    
+                    <button type="button" id="test-connection-btn" class="btn btn-secondary">
+                        <span class="btn-icon">🔗</span>
+                        Test RAG Connection
+                    </button>
+                    
+                    <button type="button" id="reset-btn" class="btn btn-warning">
+                        <span class="btn-icon">🔄</span>
+                        Reset to Defaults
+                    </button>
+                    
+                    <button type="button" id="clear-data-btn" class="btn btn-danger">
+                        <span class="btn-icon">🗑️</span>
+                        Clear All Data
+                    </button>
+                </div>
+            </section>
+        </form>
+
+        <div id="loading-indicator" class="loading-indicator">
+            <!-- Loading content will be shown here -->
+        </div>
+
+        <div id="server-stats-container" class="server-stats">
+            <!-- Server statistics will be shown here -->
+        </div>
+    </div>
+
+    <script type="module" src="options.js"></script>
+</body>
+</html>
